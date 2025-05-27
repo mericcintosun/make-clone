@@ -30,7 +30,7 @@ const SubBanner = () => {
       </div>
       <button
         onClick={handleClose}
-        className="absolute right-4 p-1 hover:bg-white/10 rounded transition-colors duration-200"
+        className="absolute right-4 p-1 hover:bg-white/10 rounded transition-colors duration-200 cursor-pointer"
         aria-label="Close banner"
       >
         <IoClose size={20} />
