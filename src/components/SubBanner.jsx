@@ -14,7 +14,7 @@ const SubBanner = () => {
 
   return (
     <div
-      className="w-full bg-[#5b1a95] text-white py-3 px-4 flex items-center justify-center relative"
+      className="fixed top-0 left-0 w-full bg-[#5b1a95] text-white py-3 px-4 flex items-center justify-center z-50"
       style={{ fontFamily: "Montserrat, sans-serif" }}
     >
       <div className="text-center text-base sm:text-lg max-w-lg mx-auto px-12">
