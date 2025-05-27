@@ -1,24 +1,43 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSubBannerVisible, setIsSubBannerVisible] = useState(true);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // SubBanner height is approximately 60px (py-3 = 12px top + 12px bottom + text height)
+  // Check if SubBanner exists in DOM to determine visibility
+  useEffect(() => {
+    const checkSubBanner = () => {
+      const subBannerElement = document.querySelector('[data-subbanner]');
+      setIsSubBannerVisible(!!subBannerElement);
+    };
+
+    // Initial check
+    checkSubBanner();
+
+    // Set up observer to watch for SubBanner changes
+    const observer = new MutationObserver(checkSubBanner);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // SubBanner height is approximately 96px (adjusted by user)
   const subBannerHeight = 96;
   const navbarHeight = 80;
-  const totalTopHeight = subBannerHeight + navbarHeight;
+  const navbarTop = isSubBannerVisible ? subBannerHeight : 0;
+  const totalTopHeight = navbarTop + navbarHeight;
 
   return (
     <>
       <nav 
-        className="fixed left-0 w-full h-20 bg-gradient-to-r from-[#220041] to-[#41007F] flex items-center justify-between px-6 z-40"
-        style={{ top: `${subBannerHeight}px` }}
+        className="fixed left-0 w-full h-20 bg-gradient-to-r from-[#220041] to-[#41007F] flex items-center justify-between px-6 z-40 transition-all duration-300"
+        style={{ top: `${navbarTop}px` }}
       >
         {/* Logo */}
         <div className="h-10 flex items-center">
@@ -62,7 +81,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed left-0 w-full bg-gradient-to-b from-[#220041] to-[#41007F] z-30"
+          className="fixed left-0 w-full bg-gradient-to-b from-[#220041] to-[#41007F] z-30 transition-all duration-300"
           style={{ 
             top: `${totalTopHeight}px`,
             height: `calc(100vh - ${totalTopHeight}px)`
