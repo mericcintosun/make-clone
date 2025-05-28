@@ -115,7 +115,7 @@ const PlatformBenefits = () => {
 
   return (
     <div
-      className="w-full max-w-4xl mx-auto px-6 py-6"
+      className="w-full max-w-4xl mx-auto px-6 py-6 pb-12"
       style={{ backgroundColor: "#f5f0f0" }}
     >
       <h1 className="text-3xl font-extrabold text-center text-gray-800 mb-12 leading-tight">
