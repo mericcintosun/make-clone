@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
       <body className={`antialiased`}>
         <SubBanner />
         <Navbar />
-        <div className="pt-32">
+        <div>
           {children}
         </div>
       </body>

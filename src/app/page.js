@@ -1,9 +1,11 @@
 import HeroSection from "@/components/HeroSection";
+import PlatformBenefits from "@/components/PlatformBenefits";
 
 export default function Home() {
   return (
-    <div className=" border border-red-500">
+    <div>
       <HeroSection />
+      <PlatformBenefits/>
     </div>
   );
 }

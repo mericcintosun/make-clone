@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Menu data structure
 const menuSections = [
@@ -68,6 +69,7 @@ const getIconPath = (iconName) => `/navbarIcon/${iconName}.svg`;
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [subBannerHeight, setSubBannerHeight] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
   const subBannerRef = useRef(null);
 
   const toggleMobileMenu = () => {
@@ -130,9 +132,15 @@ const Navbar = () => {
       subtree: true,
     });
 
+    // Set loaded state after a short delay
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 50);
+
     return () => {
       resizeObserver.disconnect();
       mutationObserver.disconnect();
+      clearTimeout(timer);
     };
   }, []);
 
@@ -155,9 +163,86 @@ const Navbar = () => {
     };
   }, [subBannerHeight]);
 
+  // Animation variants
+  const navbarVariants = {
+    hidden: { opacity: 0, y: -80 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const logoVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+        delay: 0.2
+      }
+    }
+  };
+
+  const hamburgerVariants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+        delay: 0.2
+      }
+    }
+  };
+
+  const mobileMenuVariants = {
+    hidden: {
+      opacity: 0,
+      y: "-100%",
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut"
+      }
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+        when: "beforeChildren",
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const menuItemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut"
+      }
+    }
+  };
+
   // Render menu item helper
-  const renderMenuItem = (item) => (
-    <li key={item.text} className="flex items-center space-x-3">
+  const renderMenuItem = (item, index) => (
+    <motion.li 
+      key={item.text} 
+      className="flex items-center space-x-3"
+      variants={menuItemVariants}
+      custom={index}
+    >
       <div className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center flex-shrink-0">
         <Image
           src={getIconPath(item.icon)}
@@ -167,12 +252,17 @@ const Navbar = () => {
         />
       </div>
       <span className="text-gray-800 text-sm font-semibold">{item.text}</span>
-    </li>
+    </motion.li>
   );
 
   // Render menu section helper
   const renderMenuSection = (section, index) => (
-    <div key={section.title} className="mb-6 sm:mb-8">
+    <motion.div 
+      key={section.title} 
+      className="mb-6 sm:mb-8"
+      variants={menuItemVariants}
+      custom={index}
+    >
       <h3 className="text-gray-500 text-xs font-semibold mb-3 sm:mb-4 tracking-wider">
         {section.title}
       </h3>
@@ -188,26 +278,32 @@ const Navbar = () => {
             : "space-y-3 sm:space-y-4"
         }
       >
-        {section.items.map(renderMenuItem)}
+        {section.items.map((item, itemIndex) => renderMenuItem(item, itemIndex))}
       </ul>
       {index < menuSections.length - 1 && (
         <hr className="border-gray-200 mt-6 sm:mt-8" />
       )}
-    </div>
+    </motion.div>
   );
 
   return (
     <>
-      <nav
+      <motion.nav
         className={`fixed left-0 w-full h-20 flex items-center justify-between px-4 sm:px-6 z-40 transition-all duration-300 ease-in-out ${
           isMobileMenuOpen
             ? "bg-white shadow-lg"
             : "bg-gradient-to-r from-[#220041] to-[#41007F]"
         }`}
         style={navbarStyle}
+        variants={navbarVariants}
+        initial="hidden"
+        animate={isLoaded ? "visible" : "hidden"}
       >
         {/* Logo */}
-        <div className="h-10 flex items-center cursor-pointer flex-shrink-0">
+        <motion.div 
+          className="h-10 flex items-center cursor-pointer flex-shrink-0"
+          variants={logoVariants}
+        >
           <Image
             src="/logo.png"
             alt="Logo"
@@ -218,81 +314,124 @@ const Navbar = () => {
             }`}
             priority
           />
-        </div>
+        </motion.div>
 
         {/* Hamburger Menu */}
-        <button
+        <motion.button
           className="h-12 w-12 sm:h-14 sm:w-14 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform duration-200 flex-shrink-0"
           onClick={toggleMobileMenu}
           aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+          variants={hamburgerVariants}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          {isMobileMenuOpen ? (
-            // Close (X) icon
-            <Image
-              src={getIconPath("close")}
-              alt="Close menu"
-              width={56}
-              height={56}
-              className="h-12 w-12 sm:h-14 sm:w-14"
-            />
-          ) : (
-            // Hamburger menu icon
-            <Image
-              src={getIconPath("hamburger")}
-              alt="Open menu"
-              width={56}
-              height={56}
-              className="h-12 w-12 sm:h-14 sm:w-14"
-            />
-          )}
-        </button>
-      </nav>
+          <AnimatePresence mode="wait">
+            {isMobileMenuOpen ? (
+              <motion.div
+                key="close"
+                initial={{ opacity: 0, rotate: -90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: 90 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Image
+                  src={getIconPath("close")}
+                  alt="Close menu"
+                  width={56}
+                  height={56}
+                  className="h-12 w-12 sm:h-14 sm:w-14"
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="hamburger"
+                initial={{ opacity: 0, rotate: 90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: -90 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Image
+                  src={getIconPath("hamburger")}
+                  alt="Open menu"
+                  width={56}
+                  height={56}
+                  className="h-12 w-12 sm:h-14 sm:w-14"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.button>
+      </motion.nav>
 
       {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 transition-opacity duration-300"
-          onClick={toggleMobileMenu}
-        />
-      )}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black bg-opacity-50 z-30"
+            onClick={toggleMobileMenu}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Mobile Menu */}
-      <div
-        className={`fixed left-0 w-full bg-white z-35 transition-all duration-300 ease-in-out transform ${
-          isMobileMenuOpen
-            ? "translate-y-0 opacity-100"
-            : "-translate-y-full opacity-0 pointer-events-none"
-        }`}
-        style={mobileMenuStyle}
-      >
-        <div className="h-full overflow-y-auto">
-          <div className="p-4 sm:p-6 pb-8">
-            {/* Render all menu sections */}
-            {menuSections.map(renderMenuSection)}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            className="fixed left-0 w-full bg-white z-35"
+            style={mobileMenuStyle}
+            variants={mobileMenuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            <div className="h-full overflow-y-auto">
+              <motion.div className="p-4 sm:p-6 pb-8">
+                {/* Render all menu sections */}
+                {menuSections.map((section, index) => renderMenuSection(section, index))}
 
-            <hr className="border-gray-200 mb-6 sm:mb-8" />
+                <motion.hr 
+                  className="border-gray-200 mb-6 sm:mb-8" 
+                  variants={menuItemVariants}
+                />
 
-            {/* Talk to sales Section */}
-            <div className="mb-6 sm:mb-8">
-              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">
-                Talk to sales
-              </h2>
+                {/* Talk to sales Section */}
+                <motion.div 
+                  className="mb-6 sm:mb-8"
+                  variants={menuItemVariants}
+                >
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">
+                    Talk to sales
+                  </h2>
 
-              <div className="space-y-3 sm:space-y-4">
-                {/* Log in Button */}
-                <button className="py-3 px-6 border-2 border-purple-500 text-purple-500 rounded-2xl font-semibold text-sm hover:bg-purple-50 transition-colors">
-                  Log in
-                </button>
+                  <div className="space-y-3 sm:space-y-4">
+                    {/* Log in Button */}
+                    <motion.button 
+                      className="py-3 px-6 border-2 border-purple-500 text-purple-500 rounded-2xl font-semibold text-sm hover:bg-purple-50 transition-colors"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Log in
+                    </motion.button>
 
-                {/* Get started free Button */}
-                <button className="py-3 px-6 bg-pink-500 text-white rounded-2xl font-semibold text-sm hover:bg-pink-600 transition-colors">
-                  Get started free
-                </button>
-              </div>
+                    {/* Get started free Button */}
+                    <motion.button 
+                      className="py-3 px-6 bg-pink-500 text-white rounded-2xl font-semibold text-sm hover:bg-pink-600 transition-colors"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Get started free
+                    </motion.button>
+                  </div>
+                </motion.div>
+              </motion.div>
             </div>
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
