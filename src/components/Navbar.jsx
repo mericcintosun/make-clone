@@ -70,11 +70,29 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [subBannerHeight, setSubBannerHeight] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const subBannerRef = useRef(null);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  // Scroll detection
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      setIsScrolled(scrollTop > 50); // Set scrolled state when user scrolls more than 50px
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Check initial scroll position
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   // Optimized SubBanner height tracking with single observer
   useEffect(() => {
@@ -290,7 +308,7 @@ const Navbar = () => {
     <>
       <motion.nav
         className={`fixed left-0 w-full h-20 flex items-center justify-between px-4 sm:px-6 z-40 transition-all duration-300 ease-in-out ${
-          isMobileMenuOpen
+          isMobileMenuOpen || isScrolled
             ? "bg-white shadow-lg"
             : "bg-gradient-to-r from-[#220041] to-[#41007F]"
         }`}
@@ -310,7 +328,7 @@ const Navbar = () => {
             width={72}
             height={24}
             className={`h-6 w-auto object-contain transition-all duration-300 ${
-              isMobileMenuOpen ? "" : "brightness-0 invert"
+              isMobileMenuOpen || isScrolled ? "" : "brightness-0 invert"
             }`}
             priority
           />
