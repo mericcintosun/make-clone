@@ -9,7 +9,7 @@ const PlatformBenefits = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <circle cx="30" cy="30" r="30" fill="url(#automation-gradient)" />
+      <circle cx="30" cy="30" r="30" fill="#8101fd" />
       <path
         d="M30 18L33.5 21.5L30 25L26.5 21.5L30 18Z"
         fill="white"
@@ -35,19 +35,6 @@ const PlatformBenefits = () => {
         stroke="white"
         strokeWidth="1.5"
       />
-      <defs>
-        <linearGradient
-          id="automation-gradient"
-          x1="0"
-          y1="0"
-          x2="60"
-          y2="60"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor="#8B5CF6" />
-          <stop offset="1" stopColor="#7C3AED" />
-        </linearGradient>
-      </defs>
     </svg>
   );
 
@@ -59,7 +46,7 @@ const PlatformBenefits = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <circle cx="30" cy="30" r="30" fill="url(#growth-gradient)" />
+      <circle cx="30" cy="30" r="30" fill="#bb1fc0" />
       <path
         d="M20 35L35 20L40 25L35 30L45 20L45 30L35 30"
         fill="none"
@@ -76,19 +63,6 @@ const PlatformBenefits = () => {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <defs>
-        <linearGradient
-          id="growth-gradient"
-          x1="0"
-          y1="0"
-          x2="60"
-          y2="60"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor="#EC4899" />
-          <stop offset="1" stopColor="#DB2777" />
-        </linearGradient>
-      </defs>
     </svg>
   );
 
@@ -100,7 +74,7 @@ const PlatformBenefits = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <circle cx="30" cy="30" r="30" fill="url(#collaboration-gradient)" />
+      <circle cx="30" cy="30" r="30" fill="#b76efc" />
       <path
         d="M25 28C25 28 27 30 30 30C33 30 35 28 35 28C35 28 37 26 40 26C42 26 42 28 42 30C42 32 40 34 37 34H23C20 34 18 32 18 30C18 28 20 26 22 26C25 26 25 28 25 28Z"
         fill="white"
@@ -115,19 +89,6 @@ const PlatformBenefits = () => {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <defs>
-        <linearGradient
-          id="collaboration-gradient"
-          x1="0"
-          y1="0"
-          x2="60"
-          y2="60"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor="#A855F7" />
-          <stop offset="1" stopColor="#9333EA" />
-        </linearGradient>
-      </defs>
     </svg>
   );
 
@@ -185,11 +146,11 @@ const PlatformBenefits = () => {
           </div>
         ))}
       </div>
-      
+
       <div className="flex justify-center mt-6">
-        <button 
+        <button
           className="px-6 py-3 rounded-xl text-white font-extrabold text-md hover:opacity-90 transition-opacity duration-200"
-          style={{ backgroundColor: '#f025f6' }}
+          style={{ backgroundColor: "#f025f6" }}
         >
           Explore more
         </button>

@@ -1,0 +1,38 @@
+<svg
+  width="60"
+  height="60"
+  viewBox="0 0 60 60"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <circle cx="30" cy="30" r="30" fill="url(#growth-gradient)" />
+  <path
+    d="M20 35L35 20L40 25L35 30L45 20L45 30L35 30"
+    fill="none"
+    stroke="white"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  <path
+    d="M37 22L43 22L43 28"
+    fill="none"
+    stroke="white"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  <defs>
+    <linearGradient
+      id="growth-gradient"
+      x1="0"
+      y1="0"
+      x2="60"
+      y2="60"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop stopColor="#bb1fc0" />
+      <stop offset="1" stopColor="#bb1fc0" />
+    </linearGradient>
+  </defs>
+</svg> 

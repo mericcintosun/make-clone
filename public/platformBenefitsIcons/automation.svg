@@ -1,0 +1,47 @@
+<svg
+  width="60"
+  height="60"
+  viewBox="0 0 60 60"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <circle cx="30" cy="30" r="30" fill="url(#automation-gradient)" />
+  <path
+    d="M30 18L33.5 21.5L30 25L26.5 21.5L30 18Z"
+    fill="white"
+    stroke="white"
+    strokeWidth="1.5"
+  />
+  <circle cx="30" cy="30" r="4" fill="white" />
+  <path
+    d="M42 30L38.5 26.5L35 30L38.5 33.5L42 30Z"
+    fill="white"
+    stroke="white"
+    strokeWidth="1.5"
+  />
+  <path
+    d="M18 30L21.5 33.5L25 30L21.5 26.5L18 30Z"
+    fill="white"
+    stroke="white"
+    strokeWidth="1.5"
+  />
+  <path
+    d="M30 42L26.5 38.5L30 35L33.5 38.5L30 42Z"
+    fill="white"
+    stroke="white"
+    strokeWidth="1.5"
+  />
+  <defs>
+    <linearGradient
+      id="automation-gradient"
+      x1="0"
+      y1="0"
+      x2="60"
+      y2="60"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop stopColor="#8101fd" />
+      <stop offset="1" stopColor="#8101fd" />
+    </linearGradient>
+  </defs>
+</svg> 
