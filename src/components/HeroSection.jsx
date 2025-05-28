@@ -1,8 +1,82 @@
-import React from 'react';
+"use client"
+import React, { useState, useEffect, useMemo } from 'react';
 
 const HeroSection = () => {
+  const [subBannerHeight, setSubBannerHeight] = useState(0);
+
+  // Track SubBanner height dynamically
+  useEffect(() => {
+    const updateSubBannerHeight = () => {
+      const subBannerElement = document.querySelector("[data-subbanner]");
+      if (subBannerElement) {
+        const height = subBannerElement.getBoundingClientRect().height;
+        setSubBannerHeight(height);
+      } else {
+        setSubBannerHeight(0);
+      }
+    };
+
+    // Initial calculation
+    updateSubBannerHeight();
+
+    // ResizeObserver for efficiency
+    const resizeObserver = new ResizeObserver(updateSubBannerHeight);
+
+    const subBannerElement = document.querySelector("[data-subbanner]");
+    if (subBannerElement) {
+      resizeObserver.observe(subBannerElement);
+    }
+
+    // Watch for SubBanner element appearing/disappearing
+    const mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "childList") {
+          const addedNodes = Array.from(mutation.addedNodes);
+          const removedNodes = Array.from(mutation.removedNodes);
+
+          // Check if SubBanner was added or removed
+          const subBannerAdded = addedNodes.some(
+            (node) =>
+              node.nodeType === 1 &&
+              (node.hasAttribute?.("data-subbanner") ||
+                node.querySelector?.("[data-subbanner]"))
+          );
+          const subBannerRemoved = removedNodes.some(
+            (node) =>
+              node.nodeType === 1 &&
+              (node.hasAttribute?.("data-subbanner") ||
+                node.querySelector?.("[data-subbanner]"))
+          );
+
+          if (subBannerAdded || subBannerRemoved) {
+            updateSubBannerHeight();
+          }
+        }
+      });
+    });
+
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      resizeObserver.disconnect();
+      mutationObserver.disconnect();
+    };
+  }, []);
+
+  // Calculate dynamic padding based on SubBanner height + navbar height
+  const dynamicPaddingTop = useMemo(() => {
+    const navbarHeight = 80; // 5rem = 80px (h-20)
+    return subBannerHeight + navbarHeight;
+  }, [subBannerHeight]);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#220041] to-[#41007F] text-white px-4 py-16 pt-32">
+    <div 
+      className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#220041] to-[#41007F] text-white px-4 py-16"
+      style={{ paddingTop: `${dynamicPaddingTop}px` }}
+    >
       {/* Main Heading */}
       <h1 className="text-2xl font-bold text-center mb-8 max-w-4xl leading-tight">
         Automation you can see, flex, and scale
