@@ -153,7 +153,10 @@ const PlatformBenefits = () => {
   ];
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-6 py-6">
+    <div
+      className="w-full max-w-4xl mx-auto px-6 py-6"
+      style={{ backgroundColor: "#f5f0f0" }}
+    >
       <h1 className="text-3xl font-extrabold text-center text-gray-800 mb-12 leading-tight">
         Visualize a more productive
         <br />
@@ -164,19 +167,32 @@ const PlatformBenefits = () => {
         {benefits.map((benefit, index) => (
           <div
             key={index}
-            className="w-[90%] mx-auto bg-gray-50 rounded-2xl p-8 flex items-center gap-6 shadow-sm hover:shadow-md transition-shadow duration-200"
+            className="w-[95%] mx-auto rounded-2xl p-6 flex items-start gap-3 shadow-sm hover:shadow-md transition-shadow duration-200"
+            style={{
+              backgroundColor: "#f5f0f0",
+              border: "1px solid rgba(128, 128, 128, 0.2)",
+            }}
           >
             <div className="flex-shrink-0">{benefit.icon}</div>
             <div className="flex-1">
-              <h2 className="text-xl font-semibold text-gray-800 mb-3">
+              <h2 className="text-lg font-semibold text-gray-800 mb-3">
                 {benefit.title}
               </h2>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 text-sm leading-relaxed">
                 {benefit.description}
               </p>
             </div>
           </div>
         ))}
+      </div>
+      
+      <div className="flex justify-center mt-6">
+        <button 
+          className="px-6 py-3 rounded-xl text-white font-extrabold text-md hover:opacity-90 transition-opacity duration-200"
+          style={{ backgroundColor: '#f025f6' }}
+        >
+          Explore more
+        </button>
       </div>
     </div>
   );
