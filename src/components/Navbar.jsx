@@ -58,9 +58,7 @@ const menuSections = [
   },
   {
     title: "PRICING",
-    items: [
-      { icon: "credit-card", text: "Pricing" },
-    ],
+    items: [{ icon: "credit-card", text: "Pricing" }],
   },
 ];
 
@@ -93,7 +91,7 @@ const Navbar = () => {
 
     // Single ResizeObserver for efficiency
     const resizeObserver = new ResizeObserver(updateSubBannerHeight);
-    
+
     const subBannerElement = document.querySelector("[data-subbanner]");
     if (subBannerElement) {
       resizeObserver.observe(subBannerElement);
@@ -102,18 +100,24 @@ const Navbar = () => {
     // Watch for SubBanner element appearing/disappearing
     const mutationObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type === 'childList') {
+        if (mutation.type === "childList") {
           const addedNodes = Array.from(mutation.addedNodes);
           const removedNodes = Array.from(mutation.removedNodes);
-          
+
           // Check if SubBanner was added or removed
-          const subBannerAdded = addedNodes.some(node => 
-            node.nodeType === 1 && (node.hasAttribute?.('data-subbanner') || node.querySelector?.('[data-subbanner]'))
+          const subBannerAdded = addedNodes.some(
+            (node) =>
+              node.nodeType === 1 &&
+              (node.hasAttribute?.("data-subbanner") ||
+                node.querySelector?.("[data-subbanner]"))
           );
-          const subBannerRemoved = removedNodes.some(node => 
-            node.nodeType === 1 && (node.hasAttribute?.('data-subbanner') || node.querySelector?.('[data-subbanner]'))
+          const subBannerRemoved = removedNodes.some(
+            (node) =>
+              node.nodeType === 1 &&
+              (node.hasAttribute?.("data-subbanner") ||
+                node.querySelector?.("[data-subbanner]"))
           );
-          
+
           if (subBannerAdded || subBannerRemoved) {
             updateSubBannerHeight();
           }
@@ -133,10 +137,13 @@ const Navbar = () => {
   }, []);
 
   // Memoized styles to prevent unnecessary re-renders
-  const navbarStyle = useMemo(() => ({
-    top: `${subBannerHeight}px`,
-    transform: "translateZ(0)", // Force hardware acceleration
-  }), [subBannerHeight]);
+  const navbarStyle = useMemo(
+    () => ({
+      top: `${subBannerHeight}px`,
+      transform: "translateZ(0)", // Force hardware acceleration
+    }),
+    [subBannerHeight]
+  );
 
   const mobileMenuStyle = useMemo(() => {
     const navbarHeight = 80;
@@ -159,9 +166,7 @@ const Navbar = () => {
           height={18}
         />
       </div>
-      <span className="text-gray-800 text-sm font-semibold">
-        {item.text}
-      </span>
+      <span className="text-gray-800 text-sm font-semibold">{item.text}</span>
     </li>
   );
 
@@ -176,7 +181,13 @@ const Navbar = () => {
           {section.subtitle}
         </h2>
       )}
-      <ul className={section.title === "SOLUTIONS" ? "grid grid-cols-1 gap-3 sm:gap-4" : "space-y-3 sm:space-y-4"}>
+      <ul
+        className={
+          section.title === "SOLUTIONS"
+            ? "grid grid-cols-1 gap-3 sm:gap-4"
+            : "space-y-3 sm:space-y-4"
+        }
+      >
         {section.items.map(renderMenuItem)}
       </ul>
       {index < menuSections.length - 1 && (
